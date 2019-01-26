@@ -1,66 +1,55 @@
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn import linear_model
 from macpath import dirname, join
 
-
+import sklearn
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
 
 path = join(dirname(__file__), "california_housing_train.csv")
 data = pd.read_csv(path)
-y = data.loc[:, "median_house_value"].tolist()
-X1 = data.loc[:,"housing_median_age"].tolist()
-X2 = data.loc[:,"total_rooms"].tolist()
-X3 = data.loc[:,"total_bedrooms"].tolist()
-X4 = data.loc[:,"population"].tolist()
 
-X=[]
-X.append(X1)
-X.append(X2)
-X.append(X3)
-X.append(X4)
-X = np.asarray(X)
-Y = np.asarray(y)
+data = data.values
 
-x_train = X[:,:16000]
-y_train = y[:16000]
-x_test = X[:, 16000:]
-y_test = y[16000:]
+X    = np.c_[data[:,1],data[:,2],data[:,3],data[:,4]]
+Y = np.c_[data[:,0]]
 
-ols = linear_model.LinearRegression()
-model = ols.fit(x_train.T,y_train)
-
-plt.scatter(x_train[0,:50], y_train[:50], color='red')
-plt.title('Median House Value vs Housing Median Age', fontsize=14)
-plt.xlabel('Housing Median Age', fontsize=14)
-plt.ylabel('Median House Value', fontsize=14)
+plt.scatter(X[:, 0], Y, s=10, color='g', marker='x')
+plt.title (" housing_meidan_age and median_house_value", fontsize = 14)
+plt.xlabel('housing_median_age', fontsize=14)
+plt.ylabel('median_house_value', fontsize=10)
 plt.grid(True)
 plt.show()
 
-plt.scatter(x_train[1,:50], y_train[:50], color='green')
-plt.title('Median House Value vs Total Rooms', fontsize=14)
-plt.xlabel('Total Rooms', fontsize=14)
-plt.ylabel('Median House Value', fontsize=14)
+plt.scatter(X[:, 1], Y, s=10, color='g', marker='x')
+plt.title (" total_rooms and median_house_value", fontsize = 14)
+plt.xlabel('total_rooms', fontsize=14)
+plt.ylabel('median_house_value', fontsize=10)
 plt.grid(True)
 plt.show()
 
-plt.scatter(x_train[2,:50], y_train[:50], color='blue')
-plt.title('Median House Value vs Total Bedrooms', fontsize=14)
-plt.xlabel('Total Bedrooms', fontsize=14)
-plt.ylabel('Median House Value', fontsize=14)
+plt.scatter(X[:, 2], Y, s=10, color='g', marker='x')
+plt.title (" total_bedrooms and median_house_value", fontsize = 14)
+plt.xlabel('total_bedrooms', fontsize=14)
+plt.ylabel('median_house_value', fontsize=10)
 plt.grid(True)
 plt.show()
 
-plt.scatter(x_train[3,:50], y_train[:50], color='yellow')
-plt.title('Median House Value vs Population', fontsize=14)
-plt.xlabel('Population', fontsize=14)
-plt.ylabel('Median House Value', fontsize=14)
+plt.scatter(X[:, 3], Y, s=10, color='g', marker='x')
+plt.title (" population and median_house_value", fontsize = 14)
+plt.xlabel('population', fontsize=14)
+plt.ylabel('median_house_value', fontsize=10)
 plt.grid(True)
 plt.show()
 
 
-print('Intercept: \n', ols.intercept_)
-print('Coefficients: \n', ols.coef_)
+model = LinearRegression()
+model = model.fit(X,Y)
+predict = model.predict(X)
 
-print ('\n\n',model.predict(x_test.T))
-print(0)
+print(predict)
+print()
+print(model.coef_)
+print()
